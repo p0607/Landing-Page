@@ -99,7 +99,7 @@ html, body {
     padding: 0 5% 0.2rem;
     position: relative;
     z-index: 2;
-    margin: 0.5rem 0 1rem 0;
+    margin: 1rem 0 1rem 0;
   }
   
   .hero-section h1 {
@@ -209,8 +209,8 @@ html, body {
   /* Apps Section */
   .apps-section-wrapper {
     position: relative;
-    margin: 0.5rem 0 0.2rem 0;
-    padding: 0.2rem 0;
+    margin: 0.5rem 0 1.5rem 0;
+    padding: 0.5rem 0;
     overflow: hidden;
   }
   
