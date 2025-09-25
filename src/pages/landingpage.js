@@ -111,7 +111,7 @@ const LandingPage = () => {
         </section>
       </div>
 
-      {/* Hero Section - Moved below apps */}
+      {/* Hero Section - Combined into one */}
       <section className="hero-section">
         <h1>
           Your Tools for Success <span className="highlight-yellow">– Built for You, By You</span>.
@@ -119,9 +119,7 @@ const LandingPage = () => {
         <p>
           Work smarter, collaborate better, and achieve more with our powerful  <span className="highlight-blue">in-house solutions</span>!
         </p>
-        <div className="hero-buttons"></div>
-      </section>
-      <section className="hero-section">
+        
         <h1>
           "Powering Your Productivity ⚡"
           "Designed to streamline workflows, enhance collaboration, and drive results." 
