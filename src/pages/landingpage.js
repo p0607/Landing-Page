@@ -119,8 +119,10 @@ const LandingPage = () => {
         <p>
           Work smarter, collaborate better, and achieve more with our powerful  <span className="highlight-blue">in-house solutions</span>!
         </p>
+
         
-        <h1>
+        
+        <h1 className="hero-section-second">
           "Powering Your Productivity ⚡"
           "Designed to streamline workflows, enhance collaboration, and drive results." 
         </h1>

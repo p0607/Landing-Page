@@ -99,12 +99,21 @@ html, body {
     padding: 0 5% 0.2rem;
     position: relative;
     z-index: 2;
-    margin: 3rem 0 1rem 0;
+    margin: 4rem 0 1rem 0;
   }
   
   .hero-section h1 {
     font-size: 2.2rem;
     color: #222;
+    margin-bottom: 0.2rem;
+    line-height: 1.1;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+  }
+
+  .hero-section-second {
+    font-size: 2.2rem;
+    color: #222;
+    margin-top: 1.5rem;
     margin-bottom: 0.2rem;
     line-height: 1.1;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
@@ -200,7 +209,7 @@ html, body {
   /* Apps Section */
   .apps-section-wrapper {
     position: relative;
-    margin: -1rem 0 0.5rem 0;
+    margin: 0.5rem 0 1rem 0;
     padding: 0.5rem 0;
     overflow: hidden;
   }
