@@ -96,33 +96,14 @@ const LandingPage = () => {
         <div className="apps-half-circle-bg"></div>
         <section className="apps-grid">
           {apps.map((app, idx) => (
-            <div key={idx} className={`app-item ${app.name === 'Financials' ? 'financials-tab' : ''}`}>
+            <div key={idx} className="app-item">
               <button 
-                className={`app-button ${app.name === 'Financials' ? 'financials-button' : ''}`}
+                className="app-button"
                 onClick={() => window.open(app.link, "_blank")} // Opens link in a new tab
-                style={app.name === 'Financials' ? {
-                  background: '#ffffff',
-                  transition: 'all 0.3s ease'
-                } : {}}
-                onMouseEnter={(e) => {
-                  if (app.name === 'Financials') {
-                    e.target.style.background = '#1e3a8a';
-                    e.target.style.boxShadow = '8px 8px 16px #1e1e1e, -8px -8px 16px #2a2a2a, inset 2px 2px 4px rgba(255, 255, 255, 0.1), inset -2px -2px 4px rgba(0, 0, 0, 0.3)';
-                    e.target.style.transform = 'translateY(-3px)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (app.name === 'Financials') {
-                    e.target.style.background = '#ffffff';
-                    e.target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
-                    e.target.style.transform = 'translateY(0)';
-                  }
-                }}
               >
                 <div className="app-icon-container">
                   {app.icon}
                 </div>
-                <div className="app-name-on-button">{app.name}</div>
               </button>
               <div className="app-name">{app.name}</div>
             </div>
