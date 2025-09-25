@@ -122,6 +122,7 @@ const LandingPage = () => {
                 <div className="app-icon-container">
                   {app.icon}
                 </div>
+                <div className="app-name-on-button">{app.name}</div>
               </button>
               <div className="app-name">{app.name}</div>
             </div>
