@@ -33,16 +33,11 @@ html, body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 5%;
+    padding: 5px 5%;
     background: white;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    position: relative;
     z-index: 10;
     margin: 0;
-    padding-top: 0;
-    padding-bottom: 0;
   }
   
   .logo {
@@ -104,7 +99,7 @@ html, body {
     padding: 0 5% 0.2rem;
     position: relative;
     z-index: 2;
-    margin: 0.2rem 0;
+    margin: 2rem 0;
   }
   
   .hero-section h1 {
@@ -205,8 +200,8 @@ html, body {
   /* Apps Section */
   .apps-section-wrapper {
     position: relative;
-    margin: 0;
-    padding: 80px 0 0.2rem 0;
+    margin: 0.5rem 0;
+    padding: 0.5rem 0;
     overflow: hidden;
   }
   
@@ -225,8 +220,8 @@ html, body {
   .apps-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    max-width: 800px;
+    gap: 10px;
+    max-width: 600px;
     margin: 0 auto;
     padding: 0 1rem;
     position: relative;
@@ -234,11 +229,11 @@ html, body {
   
   .app-item {
     background: transparent;
-    border-radius: 25px;
-    padding: 0.5rem;
+    border-radius: 20px;
+    padding: 0.3rem;
     transition: all 0.4s ease;
     text-align: center;
-    width: 120px;
+    width: 100px;
     margin: 0 auto;
   }
   
@@ -269,22 +264,22 @@ html, body {
   }
   
   .app-name {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 600;
     color: #333;
     font-family: 'Dancing Script', cursive;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 8px;
+    letter-spacing: 0.5px;
+    margin-top: 6px;
     text-align: center;
   }
 
   
   .app-button{
-    width: 120px;
-    height: 90px;
+    width: 100px;
+    height: 75px;
     border: none;
-    border-radius: 25px;
+    border-radius: 20px;
     background: #ffffff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
