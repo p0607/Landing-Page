@@ -10,8 +10,6 @@ const LandingPage = () => {
   const apps = [
     {
       name: "HRMS",
-      title: "Human Resource Management System",
-      description: "Manage your workforce efficiently",
       icon: (
         <img 
           src="/hrms.png" 
@@ -22,8 +20,6 @@ const LandingPage = () => {
     },
     {
       name: "VMS",
-      title: "Vendor Management System", 
-      description: "Streamline vendor operations",
       icon: (
         <img 
           src="/vms.png" 
@@ -34,8 +30,6 @@ const LandingPage = () => {
     },
     {
       name: "CRM",
-      title: "Customer Relationship Management",
-      description: "Build better customer relationships",
       icon: (
         <img 
           src="/crm.png" 
@@ -46,8 +40,6 @@ const LandingPage = () => {
     },
     {
       name: "Financials",
-      title: "Financial Management System",
-      description: "Comprehensive financial solutions",
       icon: (
         <img 
           src="/financial.png" 
@@ -60,8 +52,8 @@ const LandingPage = () => {
   
   return (
     <div className="landing-container">
-      {/* Header */}
-      <header className="landing-header">
+      {/* Logo and Navigation - No Header Section */}
+      <div className="logo-nav-container">
         <div className="logo">
           <img 
             src="/alchemy.png" 
@@ -97,7 +89,7 @@ const LandingPage = () => {
           <a href="https://www.alchemytechsol.com/eng/index.html" target="_blank" rel="noopener noreferrer">Webpage</a>
           <a href="https://www.alchemytechsol.com/eng/contactus.html">Help</a>
         </nav>
-      </header>
+      </div>
 
       {/* Apps Section - Moved to top */}
       <div className="apps-section-wrapper">
@@ -132,10 +124,6 @@ const LandingPage = () => {
                 </div>
               </button>
               <div className="app-name">{app.name}</div>
-              <div className="app-details">
-                <h4>{app.title}</h4>
-                <p>{app.description}</p>
-              </div>
             </div>
           ))}
         </section>
