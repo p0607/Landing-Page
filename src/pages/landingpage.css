@@ -15,7 +15,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 5%;
+    padding: 8px 5%;
     background: white;
     position: relative;
     z-index: 10;
@@ -32,8 +32,8 @@
   }
   
   .logo img {
-    width: 160px;
-    height: 160px;
+    width: 120px;
+    height: 120px;
     object-fit: contain;
     mix-blend-mode: multiply;
   }
@@ -77,25 +77,25 @@
   .hero-section {
     text-align: center;
    font-weight: 1000;
-    padding: 0 5% 1rem;
+    padding: 0 5% 0.5rem;
     position: relative;
     z-index: 2;
   }
   
   .hero-section h1 {
-    font-size: 3rem;
+    font-size: 2.2rem;
     color: #222;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     line-height: 1.2;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
   }
   
   .hero-section p {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     color: #666;
     max-width: 800px;
-    margin: 0 auto 1rem;
-    line-height: 1.6;
+    margin: 0 auto 0.8rem;
+    line-height: 1.4;
   }
   
   .highlight-yellow {
@@ -180,8 +180,8 @@
   /* Apps Section */
   .apps-section-wrapper {
     position: relative;
-    margin: 1rem 0;
-    padding: 1rem 0 1rem;
+    margin: 0.5rem 0;
+    padding: 0.5rem 0 0.5rem;
     overflow: hidden;
   }
   
@@ -244,26 +244,26 @@
   }
   
   .app-name {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #333;
     font-family: 'Dancing Script', cursive;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-top: 10px;
+    margin-top: 8px;
     text-align: center;
   }
   
   .app-title {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 1000;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
     color: #444;
   }
   
   .app-description {
-    font-size: 1.5rem;
-    line-height: 2rem;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
     color: #000000;
   }
   .app-button{

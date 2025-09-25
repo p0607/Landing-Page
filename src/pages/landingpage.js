@@ -10,36 +10,44 @@ const LandingPage = () => {
   const apps = [
     {
       name: "HRMS",
+      title: "Human Resource Management System",
+      description: "Manage your workforce efficiently",
       icon: (
         <img 
           src="/hrms.png" 
           alt="HRMS Logo" 
         />
       ),
-      link: "https://q9hrms.com/#/login" // Replace with actual HRMS link
+      link: "https://q9hrms.com/#/login"
     },
     {
       name: "VMS",
+      title: "Vendor Management System", 
+      description: "Streamline vendor operations",
       icon: (
         <img 
           src="/vms.png" 
           alt="VMS Logo" 
         />
       ),
-      link: "http://172.172.65.159:8000" // Replace with actual VMS link
+      link: "http://172.172.65.159:8000"
     },
     {
       name: "CRM",
+      title: "Customer Relationship Management",
+      description: "Build better customer relationships",
       icon: (
         <img 
           src="/crm.png" 
           alt="CRM Logo" 
         />
       ),
-      link: "http://crm.q9hrms.com:8082/" // Replace with actual CRM link
+      link: "http://crm.q9hrms.com:8082/"
     },
     {
       name: "Financials",
+      title: "Financial Management System",
+      description: "Comprehensive financial solutions",
       icon: (
         <img 
           src="/financial.png" 
@@ -49,7 +57,7 @@ const LandingPage = () => {
       link: "http://40.67.147.19/#/"
     }
   ];
-
+  
   return (
     <div className="landing-container">
       {/* Header */}
