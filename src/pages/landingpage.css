@@ -8,6 +8,8 @@
     background-color: white;
     font-family: 'Dancing Script', cursive;
     overflow-x: hidden;
+    padding: 0;
+    margin: 0;
   }
   
   /* Header Styles */
@@ -15,10 +17,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 5%;
+    padding: 5px 5%;
     background: white;
     position: relative;
     z-index: 10;
+    margin-top: 0;
   }
   
   .logo {
@@ -32,8 +35,8 @@
   }
   
   .logo img {
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     object-fit: contain;
     mix-blend-mode: multiply;
   }
@@ -77,15 +80,16 @@
   .hero-section {
     text-align: center;
    font-weight: 1000;
-    padding: 0 5% 0.5rem;
+    padding: 0 5% 0.2rem;
     position: relative;
     z-index: 2;
+    margin: 0.2rem 0;
   }
   
   .hero-section h1 {
     font-size: 2.2rem;
     color: #222;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.4rem;
     line-height: 1.2;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
   }
@@ -94,7 +98,7 @@
     font-size: 1.1rem;
     color: #666;
     max-width: 800px;
-    margin: 0 auto 0.8rem;
+    margin: 0 auto 0.4rem;
     line-height: 1.4;
   }
   
@@ -180,8 +184,8 @@
   /* Apps Section */
   .apps-section-wrapper {
     position: relative;
-    margin: 0.5rem 0;
-    padding: 0.5rem 0 0.5rem;
+    margin: 0.2rem 0;
+    padding: 0.2rem 0 0.2rem;
     overflow: hidden;
   }
   
@@ -200,20 +204,20 @@
   .apps-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
-    max-width: 1000px;
+    gap: 15px;
+    max-width: 800px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 1rem;
     position: relative;
   }
   
   .app-item {
     background: transparent;
-    border-radius: 20px;
-    padding: 1rem;
+    border-radius: 15px;
+    padding: 0.5rem;
     transition: all 0.4s ease;
     text-align: center;
-    width: 160px;
+    width: 120px;
     margin: 0 auto;
   }
   
@@ -267,10 +271,10 @@
     color: #000000;
   }
   .app-button{
-    width: 160px;
-    height: 120px;
+    width: 120px;
+    height: 90px;
     border: none;
-    border-radius: 15px;
+    border-radius: 12px;
     background: #ffffff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
