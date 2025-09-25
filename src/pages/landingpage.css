@@ -99,7 +99,7 @@ html, body {
     padding: 0 5% 0.2rem;
     position: relative;
     z-index: 2;
-    margin: 4rem 0 1rem 0;
+    margin: 0.5rem 0 1rem 0;
   }
   
   .hero-section h1 {
@@ -113,7 +113,7 @@ html, body {
   .hero-section-second {
     font-size: 2.2rem;
     color: #222;
-    margin-top: 1.5rem;
+    margin-top: 0.8rem;
     margin-bottom: 0.2rem;
     line-height: 1.1;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
@@ -209,8 +209,8 @@ html, body {
   /* Apps Section */
   .apps-section-wrapper {
     position: relative;
-    margin: 0.5rem 0 1rem 0;
-    padding: 0.5rem 0;
+    margin: 0.5rem 0 0.2rem 0;
+    padding: 0.2rem 0;
     overflow: hidden;
   }
   
@@ -261,15 +261,15 @@ html, body {
   }
   
   .app-icon-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
     border-radius: 15px;
   }
 
   
   .app-item:hover .app-icon-container {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
   
   .app-name {
