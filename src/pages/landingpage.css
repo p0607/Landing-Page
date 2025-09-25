@@ -1,6 +1,20 @@
 /* Base Styles */
 
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap');
+
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
   .landing-container {
     height: 100vh;
     display: flex;
@@ -21,11 +35,14 @@
     align-items: center;
     padding: 0 5%;
     background: white;
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     z-index: 10;
-    margin-top: 0;
+    margin: 0;
     padding-top: 0;
-    margin-bottom: 0;
+    padding-bottom: 0;
   }
   
   .logo {
@@ -35,7 +52,7 @@
     transition: transform 0.3s ease;
     background: white;
     border-radius: 8px;
-    padding: 4px;
+    padding: 0;
   }
   
   .logo img {
@@ -188,8 +205,8 @@
   /* Apps Section */
   .apps-section-wrapper {
     position: relative;
-    margin: -2rem 0 0.2rem 0;
-    padding: 0.2rem 0 0.2rem;
+    margin: 0;
+    padding: 80px 0 0.2rem 0;
     overflow: hidden;
   }
   
@@ -320,13 +337,13 @@
   }
 
   @media (max-width: 768px) {
-    .landing-header {
+    .logo-nav-container {
       flex-direction: column;
-      padding: 20px;
+      padding: 0 5%;
     }
     
     .landing-nav {
-      margin-top: 20px;
+      margin-top: 0;
       flex-wrap: wrap;
       justify-content: center;
     }
