@@ -47,6 +47,16 @@ const LandingPage = () => {
         />
       ),
       link: "http://40.67.147.19/#/"
+    },
+    {
+      name: "Matrix",
+      icon: (
+        <img 
+          src="/matrix.png" 
+          alt="Matrix Logo" 
+        />
+      ),
+      link: "http://20.244.92.198/COSEC/Login/Login"
     }
   ];
   
@@ -124,8 +134,10 @@ const LandingPage = () => {
         
         <h1 className="hero-section-second">
           "Powering Your Productivity ⚡"
-          "Designed to streamline workflows, enhance collaboration, and drive results." 
         </h1>
+        <p>
+          "Designed to streamline workflows, enhance collaboration, and drive results."
+        </p>
         <p>
           Great tools empower great teams—let's build excellence together.  <span className="highlight-blue">🏆 </span>!
         </p>

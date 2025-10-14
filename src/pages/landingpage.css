@@ -228,9 +228,9 @@ html, body {
   
   .apps-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 10px;
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto;
     padding: 0 1rem;
     position: relative;
@@ -335,7 +335,7 @@ html, body {
   /* Responsive Adjustments */
   @media (max-width: 1024px) {
     .apps-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       max-width: 600px;
     }
   }
