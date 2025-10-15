@@ -404,8 +404,3 @@ html, body {
     background: #f5f5f5;
   }
 
-  /* Make Matrix PNG blend with dark blue hover background */
-  .app-item:nth-child(5) .app-button:hover .app-icon-container img {
-    mix-blend-mode: overlay;
-    filter: brightness(1.5) contrast(1.2);
-  }
