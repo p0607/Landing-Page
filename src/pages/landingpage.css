@@ -19,7 +19,7 @@ html, body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #ebf0f3;
+    background-color: #fcfcfd;
     font-family: 'Dancing Script', cursive;
     overflow-x: hidden;
     padding: 0;
