@@ -19,7 +19,7 @@ html, body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #d9dde0;
+    background-color: #e6eaed;
     font-family: 'Dancing Script', cursive;
     overflow-x: hidden;
     padding: 0;
@@ -41,6 +41,18 @@ html, body {
     margin: 0;
     border-radius: 0 0 50% 50%;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Create downward oval curve */
+  .logo-nav-container::after {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background: white;
+    border-radius: 0 0 50% 50%;
   }
   
   .logo {
