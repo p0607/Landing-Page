@@ -404,3 +404,10 @@ html, body {
     background: #f5f5f5;
   }
 
+  /* Add dark blue background to Matrix icon container to match other tabs */
+  .app-item:nth-child(5) .app-icon-container {
+    background: #1e3a8a;
+    border-radius: 15px;
+    padding: 8px;
+  }
+
