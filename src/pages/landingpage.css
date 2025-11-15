@@ -19,31 +19,78 @@ html, body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #e8f0f8;
+  background-color: #ffffff;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   overflow-x: hidden;
   position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Background Patterns */
-.landing-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2) 2px, transparent 2px),
-    linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 30%, rgba(255, 255, 255, 0.1) 35%, transparent 35%),
-    linear-gradient(-45deg, transparent 30%, rgba(255, 255, 255, 0.1) 30%, rgba(255, 255, 255, 0.1) 35%, transparent 35%);
-  background-size: 100px 100px, 120px 120px, 80px 80px, 60px 60px, 60px 60px;
-  background-position: 0 0, 50px 50px, 25px 25px, 0 0, 30px 30px;
-  pointer-events: none;
-  z-index: 0;
+/* Dark Mode Styles */
+.landing-container.dark-mode {
+  background-color: #000000;
+  color: #ffffff;
 }
+
+
+.landing-container.dark-mode .motto {
+  color: #ffffff;
+}
+
+.landing-container.dark-mode .app-button {
+  background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+  border: 2px solid #ffffff;
+  color: #ffffff;
+}
+
+.landing-container.dark-mode .app-button:hover {
+  background: linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 100%);
+}
+
+.landing-container.dark-mode .app-icon {
+  color: #ffffff;
+}
+
+.landing-container.dark-mode .app-text {
+  color: #ffffff;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  background: #ffffff;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.landing-container.dark-mode .theme-toggle {
+  background: #333;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.landing-container.dark-mode .theme-toggle:hover {
+  background: #444;
+}
+
+/* Background Patterns - Removed, using Threads animation instead */
 
 /* Logo Header - Centered at top */
 .logo-header {
@@ -54,7 +101,7 @@ html, body {
   padding: 40px 20px 30px;
   width: 100%;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .logo {
@@ -85,7 +132,7 @@ html, body {
   justify-content: center;
   padding: 40px 20px;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .apps-grid {
