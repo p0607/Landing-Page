@@ -4,7 +4,7 @@ import './landingpage.css';
 import { AuroraBackground } from '../components/ui/aurora-background';
 
 const LandingPage = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 
   const handleClick = (link) => {
     window.open(link, "_blank");
