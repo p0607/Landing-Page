@@ -37,6 +37,7 @@ const LandingPage = () => {
             alt="Company Logo" 
           />
         </div>
+        <p className="motto">Enrich lives and empower communities</p>
       </div>
 
       {/* Apps Section with text labels */}
