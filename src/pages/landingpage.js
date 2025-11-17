@@ -74,7 +74,7 @@ const LandingPage = () => {
     },
     {
       name: "Financials",
-      link: "http://40.67.147.19/#/",
+      link: "http://q9lab.in/vendormanagement/",
       icon: <DollarIcon />
     },
     {
