@@ -4,7 +4,7 @@ import LandingPage from './pages/landingpage';
 function App() {
   useEffect(() => {
     // Set document title as fallback
-    document.title = 'Landing Page';
+    document.title = 'q9lab';
   }, []);
 
   return (
