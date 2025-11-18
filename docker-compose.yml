@@ -3,15 +3,10 @@ services:
   landing-page:
     build:
       context: .
-      dockerfile: docker/Dockerfile.ssl
+      dockerfile: docker/Dockerfile
     container_name: landing-page-app
     ports:
-      - "8085:8085"   # HTTP (redirects to HTTPS)
-      - "8443:8443"   # HTTPS
-    volumes:
-      # Mount SSL certificates from host
-      - /etc/letsencrypt/live/q9lab.in/fullchain.pem:/etc/nginx/ssl/cert.pem:ro
-      - /etc/letsencrypt/live/q9lab.in/privkey.pem:/etc/nginx/ssl/key.pem:ro
+      - "8085:8085"   # HTTP only - internal use by main nginx reverse proxy
     restart: unless-stopped
     networks:
       - vendor-management-tool_vendor-network
