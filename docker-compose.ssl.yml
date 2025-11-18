@@ -10,8 +10,12 @@ services:
       - "8443:8443"   # HTTPS
     volumes:
       # Mount SSL certificates from host
+      # For Let's Encrypt:
       - /etc/letsencrypt/live/q9lab.in/fullchain.pem:/etc/nginx/ssl/cert.pem:ro
       - /etc/letsencrypt/live/q9lab.in/privkey.pem:/etc/nginx/ssl/key.pem:ro
+      # For self-signed or custom certificates, use:
+      # - ./ssl/cert.pem:/etc/nginx/ssl/cert.pem:ro
+      # - ./ssl/key.pem:/etc/nginx/ssl/key.pem:ro
     restart: unless-stopped
     networks:
       - vendor-management-tool_vendor-network
@@ -19,3 +23,4 @@ services:
 networks:
   vendor-management-tool_vendor-network:
     external: true
+
