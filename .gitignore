@@ -41,3 +41,25 @@ pids
 
 # OS generated files
 Thumbs.db
+
+# Data files and archives (don't commit)
+*.xlsx
+*.xls
+*.rar
+*.zip
+*.tar.gz
+*.pdf
+*.doc
+*.docx
+
+# Docker and deployment files (if not needed in repo)
+# Uncomment if you don't want to track these:
+# docker-compose.ssl.yml
+# docker/Dockerfile.ssl
+# docker/nginx-ssl.conf
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
