@@ -18,13 +18,6 @@ const LandingPage = () => {
     </svg>
   );
 
-  const ShieldIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-      <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" fill="none"></path>
-    </svg>
-  );
-
   const HandshakeIcon = () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M11 12h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 14"></path>
@@ -72,11 +65,6 @@ const LandingPage = () => {
       name: "HRMS",
       link: "https://q9hrms.com/#/login",
       icon: <PersonIcon />
-    },
-    {
-      name: "VMS",
-      link: "http://172.172.65.159:8000",
-      icon: <ShieldIcon />
     },
     {
       name: "CRM",
