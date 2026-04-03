@@ -90,6 +90,11 @@ const LandingPage = () => {
       name: "Managed Services",
       link: "https://q9lab.in/ms/login",
       icon: <ServerIcon />
+    },
+    {
+      name: "Internal Hiring",
+      link: "https://q9lab.in/internal-hiring/login",
+      icon: <ServerIcon />
     }
   ];
   
