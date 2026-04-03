@@ -82,8 +82,13 @@ const LandingPage = () => {
       icon: <GridIcon />
     },
     {
-      name: "NEW VMS",
+      name: "VMS",
       link: "http://q9lab.in/vms",
+      icon: <ServerIcon />
+    },
+    {
+      name: "Managed Services",
+      link: "https://q9lab.in/ms/login",
       icon: <ServerIcon />
     }
   ];
