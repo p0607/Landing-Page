@@ -62,14 +62,19 @@ const LandingPage = () => {
   // Map app names to their links and icons
   const apps = [
     {
-      name: "HRMS",
-      link: "https://q9hrms.com/#/login",
-      icon: <PersonIcon />
-    },
-    {
       name: "CRM",
       link: "http://crm.q9hrms.com:8082/",
       icon: <HandshakeIcon />
+    },
+    {
+      name: "VMS",
+      link: "http://q9lab.in/vms",
+      icon: <ServerIcon />
+    },
+    {
+      name: "HRMS",
+      link: "https://q9hrms.com/#/login",
+      icon: <PersonIcon />
     },
     {
       name: "Financials",
@@ -80,21 +85,6 @@ const LandingPage = () => {
       name: "Matrix",
       link: "http://20.244.92.198/COSEC/Login/Login",
       icon: <GridIcon />
-    },
-    {
-      name: "VMS",
-      link: "http://q9lab.in/vms",
-      icon: <ServerIcon />
-    },
-    {
-      name: "Managed Services",
-      link: "https://q9lab.in/ms/login",
-      icon: <ServerIcon />
-    },
-    {
-      name: "Internal Hiring",
-      link: "https://q9lab.in/internal-hiring/login",
-      icon: <ServerIcon />
     }
   ];
   
