@@ -67,7 +67,7 @@ const LandingPage = () => {
       icon: <HandshakeIcon />
     },
     {
-      name: "Alchemetrics [VMS]",
+      name: "Alchemflow [VMS]",
       link: "http://q9lab.in/vms",
       icon: <ServerIcon />
     },
