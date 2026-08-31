@@ -85,6 +85,12 @@ const LandingPage = () => {
       name: "Matrix",
       link: "http://20.244.92.198/COSEC/Login/Login",
       icon: <GridIcon />
+    },
+    {
+      name: "Client Module",
+      link: "https://q9lab.in/cms",
+      icon: <HandshakeIcon />,
+      gridColumn: 3
     }
   ];
   
@@ -140,6 +146,7 @@ const LandingPage = () => {
             <button 
               key={idx}
               className="app-button"
+              style={app.gridColumn ? { gridColumn: app.gridColumn } : undefined}
               onClick={() => handleClick(app.link)}
             >
               <span className="app-icon">{app.icon}</span>
