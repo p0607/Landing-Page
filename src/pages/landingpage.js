@@ -63,7 +63,7 @@ const LandingPage = () => {
   const apps = [
     {
       name: "CRM",
-      link: "http://crm.q9hrms.com:8082/",
+      link: "https://q9lab.in/crm/login",
       icon: <HandshakeIcon />
     },
     {
