@@ -73,7 +73,7 @@ const LandingPage = () => {
     },
     {
       name: "HRMS",
-      link: "https://q9hrms.com/#/login",
+      link: "https://q9lab.in/hrms/",
       icon: <PersonIcon />
     },
     {
