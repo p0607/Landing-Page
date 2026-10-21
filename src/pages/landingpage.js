@@ -171,7 +171,7 @@ function Wordmark() {
     <div className="ap-logo-wrap">
       <div className="ap-logo-glow" aria-hidden="true" />
       <img
-        src={`${process.env.PUBLIC_URL}/alchemy-logo.png`}
+        src="/alchemy-logo.png"
         alt="Alchemy"
         className="ap-logo-img"
       />
