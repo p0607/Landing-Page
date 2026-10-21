@@ -115,7 +115,7 @@ body {
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   margin: auto 0;
   transition: width 0.2s ease, height 0.2s ease;
 }
@@ -618,9 +618,9 @@ body {
     height: auto !important;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 14px;
     align-items: center;
-    margin: 20px 0;
+    margin: 12px 0;
     transform: none !important;
   }
   .ap-lines { display: none; }

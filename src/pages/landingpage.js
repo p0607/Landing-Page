@@ -107,6 +107,8 @@ const Y_LO = 255;      // Low wave row
 const Y_SOLO = 395;    // Standalone module row
 const H = 475;         // Total stage height
 const V_RESERVE = 70;  // Root padding + stage margins + badge overhang, kept free below the header
+const MIN_SCALE = 0.48;
+const MAX_SCALE = 1.2; // Lets the stage grow a little on large monitors
 
 // Web Audio sound synthesizer for sleek sci-fi effects
 class SoundFx {
@@ -264,7 +266,7 @@ export default function LandingPage({
         const headH = headRef.current ? headRef.current.offsetHeight : 0;
         const availableW = screenW - 40;
         const availableH = window.innerHeight - headH - V_RESERVE;
-        const s = Math.min(1, Math.max(0.48, Math.min(availableW / W, availableH / H)));
+        const s = Math.min(MAX_SCALE, Math.max(MIN_SCALE, Math.min(availableW / W, availableH / H)));
         setScale(s);
       }
     };
@@ -341,8 +343,8 @@ export default function LandingPage({
       <div
         className="ap-stage-scaler"
         style={{
-          width: scale < 1 ? W * scale : W,
-          height: scale < 1 ? H * scale : H,
+          width: W * scale,
+          height: H * scale,
         }}
       >
         <nav
@@ -351,7 +353,7 @@ export default function LandingPage({
           style={{
             width: W,
             height: H,
-            transform: scale < 1 ? `scale(${scale})` : undefined,
+            transform: scale !== 1 ? `scale(${scale})` : undefined,
             transformOrigin: 'top center',
           }}
         >
