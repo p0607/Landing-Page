@@ -1,0 +1,236 @@
+/* FestiveBackground.css — festive night scene behind the landing page */
+
+.fb-root {
+  --acc-rgb: 255, 176, 48;
+  --bg-top: #6a1240;
+  --bg-br: 255, 100, 40;
+  --bg-bl: 200, 30, 130;
+  --bg-1: #2c0722;
+  --bg-2: #1d0418;
+  --bg-3: #0f020c;
+  --moon-1: #fffbe8;
+  --moon-2: #ffeab0;
+  --moon-3: #ffc66a;
+  --moon-4: #e48a3c;
+  --moon-glow: 255, 196, 100;
+  --moon-glow2: 255, 90, 130;
+  --ray-rgb: 255, 205, 130;
+  --moon-shade: 150, 70, 20;
+  --cloud-rgb: 44, 6, 32;
+  --hill-far-a: #4a0d34;
+  --hill-far-b: #1d0418;
+  --hill-near: #12030f;
+  --hill-stone: #2a0820;
+  --fog1: 255, 120, 60;
+  --fog2: 255, 60, 140;
+  --fog3: 255, 200, 80;
+  --lantern: 255, 170, 70;
+}
+
+/* Layers (back to front): 0 base + canvas, 1 sky, 2 scenery, 3 fog,
+   5 page content, 7 vignette/grain, 8 front canvas, 9 lantern glow */
+.fb-base {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(80% 60% at 50% -10%, var(--bg-top) 0%, transparent 65%),
+    radial-gradient(50% 40% at 92% 100%, rgba(var(--bg-br), 0.22), transparent 70%),
+    radial-gradient(45% 45% at 4% 96%, rgba(var(--bg-bl), 0.24), transparent 70%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 55%, var(--bg-3) 100%);
+}
+
+.fb-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.fb-canvas-back { z-index: 0; }
+.fb-canvas-front { z-index: 8; }
+
+.fb-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+.fb-sky { z-index: 1; }
+.fb-scenery { z-index: 2; }
+
+/* ---------- moon ---------- */
+.fb-moon-wrap {
+  position: absolute;
+  right: 15%;
+  top: 92px;
+  width: 172px;
+  height: 172px;
+}
+.fb-moon-rays {
+  position: absolute;
+  inset: -190%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgba(var(--ray-rgb), 0.07) 0 3deg, transparent 3deg 11deg);
+  -webkit-mask: radial-gradient(circle, #000 8%, transparent 38%);
+  mask: radial-gradient(circle, #000 8%, transparent 38%);
+  animation: fb-rot 160s linear infinite;
+}
+.fb-moon {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 33% 30%, var(--moon-1) 0, var(--moon-2) 34%, var(--moon-3) 68%, var(--moon-4) 100%);
+  box-shadow: 0 0 70px 22px rgba(var(--moon-glow), 0.3), 0 0 240px 100px rgba(var(--moon-glow2), 0.15);
+  animation: fb-moonpulse 10s ease-in-out infinite;
+  overflow: hidden;
+}
+.fb-moon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 27%, transparent 36%, rgba(var(--moon-shade), 0.42) 100%);
+}
+.fb-crater {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(var(--moon-shade), 0.1), rgba(var(--moon-shade), 0.26) 70%, rgba(255, 240, 200, 0.18) 100%);
+}
+.fb-clouds {
+  position: absolute;
+  inset: -40px -260px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+.fb-cloud {
+  position: absolute;
+  height: 46px;
+  width: 340px;
+  border-radius: 50%;
+  filter: blur(16px);
+  background: radial-gradient(ellipse at center, rgba(var(--cloud-rgb), 0.92), rgba(var(--cloud-rgb), 0) 70%);
+  animation: fb-cloud linear infinite;
+}
+.fb-cloud.fb-c1 { top: 52px; animation-duration: 68s; }
+.fb-cloud.fb-c2 { top: 92px; width: 420px; animation-duration: 92s; animation-delay: -35s; opacity: 0.85; }
+.fb-cloud.fb-c3 { top: 118px; width: 300px; animation-duration: 78s; animation-delay: -12s; opacity: 0.7; }
+
+/* ---------- scenery ---------- */
+.fb-mand {
+  position: absolute;
+  left: calc(50% - 560px);
+  top: calc(50% - 540px);
+  width: 1120px;
+  height: 1120px;
+  opacity: 0.11;
+  animation: fb-rot 260s linear infinite;
+}
+.fb-mand * { vector-effect: non-scaling-stroke; }
+
+.fb-hills {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 24vh;
+}
+.fb-fl {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: fb-flame 0.9s ease-in-out var(--dl, 0s) infinite alternate;
+}
+.fb-dg { animation: fb-dglow 2.2s ease-in-out var(--dl, 0s) infinite alternate; }
+
+.fb-garland {
+  position: absolute;
+  top: 0;
+  width: 210px;
+  height: 336px;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 10px rgba(255, 170, 40, 0.35));
+}
+.fb-garland-l { left: 0; }
+.fb-garland-r { right: 0; transform: scaleX(-1); }
+
+/* ---------- fog ---------- */
+.fb-fog {
+  position: fixed;
+  left: -25%;
+  width: 150%;
+  bottom: 0;
+  height: 34vh;
+  pointer-events: none;
+  z-index: 3;
+  filter: blur(18px);
+  background:
+    radial-gradient(40% 60% at 20% 80%, rgba(var(--fog1), 0.15), transparent 70%),
+    radial-gradient(35% 55% at 60% 92%, rgba(var(--fog2), 0.11), transparent 70%),
+    radial-gradient(40% 60% at 86% 78%, rgba(var(--fog3), 0.13), transparent 70%);
+  animation: fb-fogmove 38s ease-in-out infinite alternate;
+}
+.fb-fog.fb-fog-b {
+  height: 24vh;
+  opacity: 0.8;
+  animation-duration: 54s;
+  animation-direction: alternate-reverse;
+}
+
+/* ---------- vignette, grain, lantern glow ---------- */
+.fb-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 52%, rgba(0, 0, 0, 0.62) 100%);
+}
+.fb-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.fb-lantern {
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(460px circle at var(--lx, 50%) var(--ly, 40%), rgba(var(--lantern), 0.11), transparent 62%);
+}
+
+/* ---------- keyframes ---------- */
+@keyframes fb-rot { to { transform: rotate(360deg); } }
+@keyframes fb-moonpulse {
+  50% { box-shadow: 0 0 90px 30px rgba(var(--moon-glow), 0.36), 0 0 270px 115px rgba(var(--moon-glow2), 0.19); }
+}
+@keyframes fb-cloud {
+  from { transform: translateX(-120%); }
+  to { transform: translateX(260%); }
+}
+@keyframes fb-fogmove { to { transform: translateX(9%); } }
+@keyframes fb-garsway {
+  0%, 100% { transform: rotate(-1.8deg); }
+  50% { transform: rotate(1.8deg); }
+}
+@keyframes fb-flame {
+  0% { transform: scale(1, 1) skewX(-3deg); }
+  100% { transform: scale(0.86, 1.14) skewX(3deg); }
+}
+@keyframes fb-dglow {
+  from { opacity: 0.65; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fb-root *, .fb-root *::before, .fb-root *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+  }
+}
