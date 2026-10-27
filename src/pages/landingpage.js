@@ -59,6 +59,8 @@ const ICONS = {
 const W = 285;
 const H = 98;
 const NS = 'http://www.w3.org/2000/svg';
+// Glowing eyes in the dark woods: [left %, top %, animation delay s]
+const WOODS_EYES = [[2.4, 73, 0.5], [8.2, 64, 3.6], [88.4, 70, 6.1], [95.6, 76, 1.9], [33, 87, 7.4], [67, 89, 4.8]];
 
 export default function LandingPage() {
   const [muted, setMuted] = useState(false);
@@ -76,9 +78,19 @@ export default function LandingPage() {
   const flashRef = useRef(null);
   const flash2Ref = useRef(null);
   const logoRef = useRef(null);
+  const appRef = useRef(null);
+
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.key === 'm' || e.key === 'M') setMuted((prev) => !prev);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
 
   useEffect(() => {
     let animId = null;
+    const appEl = appRef.current;
     let ac = null;
     let sfxOn = !muted;
 
@@ -917,9 +929,13 @@ void main(){
           nextBolt = t + rnd(8000, 15000);
           if (flashRef.current) flashRef.current.style.opacity = '0';
           if (flash2Ref.current) flash2Ref.current.style.opacity = '0';
+          if (appRef.current) appRef.current.style.transform = '';
         } else {
           if (flashRef.current) flashRef.current.style.opacity = (a * 0.16).toFixed(3);
           if (flash2Ref.current) flash2Ref.current.style.opacity = (a * 0.24).toFixed(3);
+          if (appRef.current) {
+            appRef.current.style.transform = age < 260 ? `translate(${rnd(-3, 3).toFixed(1)}px,${rnd(-2, 2).toFixed(1)}px)` : '';
+          }
           bx.save();
           bx.globalAlpha = a;
           bx.lineCap = 'round';
@@ -985,6 +1001,7 @@ void main(){
 
     return () => {
       if (animId) cancelAnimationFrame(animId);
+      if (appEl) appEl.style.transform = '';
       // Browsers cap live WebGL contexts, so release each pumpkin's context when this effect re-runs
       for (const P of pumpkins) {
         if (P.gl) {
@@ -1245,6 +1262,12 @@ void main(){
             <path fill="none" d="M8 12 3 8 1 11M8 14 2 14 1 18M8.4 16.5 4 21M16 12l5-4 2 3M16 14l6 0 1 4M15.6 16.5 20 21" />
           </svg>
         </div>
+        {WOODS_EYES.map(([x, y, d]) => (
+          <i key={`${x}-${y}`} className="eyes" style={{ left: `${x}%`, top: `${y}%`, '--d': `${d}s` }}>
+            <b />
+            <b />
+          </i>
+        ))}
       </div>
 
       <div className="blood" aria-hidden="true">
@@ -1263,7 +1286,7 @@ void main(){
       <div className="fog b" />
 
       {/* Main App */}
-      <main className="app">
+      <main className="app" ref={appRef}>
         <section className="hero">
           <div className="logo" id="logo" ref={logoRef}>
             <svg viewBox="60 96 1865 629" role="img" aria-label="Alchemy Techsol">
