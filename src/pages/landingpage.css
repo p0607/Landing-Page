@@ -282,6 +282,12 @@ canvas {
   display: flex;
   flex-direction: column;
   padding: 16px 9% 22px;
+  /* Full-screen layer above the pumpkins: let clicks reach them except on the header and cards */
+  pointer-events: none;
+}
+.app .hero,
+.app .slot {
+  pointer-events: auto;
 }
 
 /* ---------- hero ---------- */
@@ -891,7 +897,7 @@ html { background: #000; }
 /* ---------- 3D pumpkins (WebGL) + dark-woods eyes ---------- */
 .pk {
   position: fixed;
-  z-index: 6;
+  z-index: 4;
   pointer-events: none;
   transform-origin: 50% 90%;
 }

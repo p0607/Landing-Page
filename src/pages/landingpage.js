@@ -624,6 +624,244 @@ export default function LandingPage() {
       });
     });
 
+    // 3D pumpkins (WebGL ray-marched, one canvas each) + click sparks
+    const PUMPKIN_STYLE = 'orange';
+    const FRAG = `precision highp float;
+uniform vec2 uRes;uniform float uTime,uYaw,uPitch,uBoost,uGlow,uFace;uniform vec3 uBase;
+mat2 rot(float a){float c=cos(a),s=sin(a);return mat2(c,s,-s,c);}
+float sdTri(vec2 p,vec2 a,vec2 b,vec2 c){
+  vec2 e0=b-a,e1=c-b,e2=a-c,v0=p-a,v1=p-b,v2=p-c;
+  vec2 q0=v0-e0*clamp(dot(v0,e0)/dot(e0,e0),0.,1.),q1=v1-e1*clamp(dot(v1,e1)/dot(e1,e1),0.,1.),q2=v2-e2*clamp(dot(v2,e2)/dot(e2,e2),0.,1.);
+  float s=sign(e0.x*e2.y-e0.y*e2.x);
+  vec2 d=min(min(vec2(dot(q0,q0),s*(v0.x*e0.y-v0.y*e0.x)),vec2(dot(q1,q1),s*(v1.x*e1.y-v1.y*e1.x))),vec2(dot(q2,q2),s*(v2.x*e2.y-v2.y*e2.x)));
+  return -sqrt(d.x)*sign(d.y);
+}
+float face(vec2 p){
+  float ax=abs(p.x);vec2 q=vec2(ax,p.y);float d=1e3;
+  if(uFace<0.5){
+    d=sdTri(q,vec2(0.13,0.05),vec2(0.52,0.05),vec2(0.32,0.43));
+    d=min(d,sdTri(p,vec2(0.0,-0.02),vec2(-0.10,-0.19),vec2(0.10,-0.19)));
+    float zz=abs(fract(p.x*3.0)-0.5)*2.0;
+    d=min(d,max(abs(p.y-(-0.37+0.40*p.x*p.x+0.075*zz))-0.085,ax-0.6));
+  }else if(uFace<1.5){
+    d=sdTri(q,vec2(0.10,0.04),vec2(0.60,0.36),vec2(0.52,0.08));
+    d=min(d,sdTri(p,vec2(0.0,0.0),vec2(-0.12,-0.2),vec2(0.12,-0.2)));
+    float zz=abs(fract(p.x*2.2)-0.5)*2.0;
+    d=min(d,max(abs(p.y-(-0.33+0.22*p.x*p.x+0.11*zz))-0.115,ax-0.7));
+  }else{
+    d=length(q-vec2(0.31,0.17))-0.13;
+    d=min(d,max(abs(length(p-vec2(0.0,0.2))-0.5)-0.055,p.y+0.12));
+    d=min(d,length(p-vec2(0.0,-0.02))-0.045);
+  }
+  return d;
+}
+vec2 map(vec3 p){
+  vec3 q=vec3(p.x,p.y*1.22,p.z);
+  float rxz=length(q.xz),phi=atan(q.z,q.x);
+  float groove=pow(1.0-abs(sin(phi*5.0)),6.0);
+  float dOut=length(q)-1.0+0.12*groove*smoothstep(0.05,0.5,rxz);
+  dOut+=0.22*exp(-10.0*rxz*rxz)*smoothstep(0.15,0.75,q.y);
+  dOut/=1.25;
+  float dIn=(length(q)-0.86)/1.25;
+  float dShell=max(dOut,-dIn);
+  dShell=max(dShell,-max(face(p.xy),0.12-p.z));
+  vec3 s=p-vec3(0.0,0.82,0.0);float yy=max(s.y,0.0);s.x-=0.5*yy*yy;
+  float srad=0.13*(1.0-0.3*clamp(s.y/0.45,0.0,1.0))*(1.0+0.1*sin(atan(s.z,s.x)*5.0));
+  float dS=max(length(s.xz)-srad,max(s.y-0.45,-s.y-0.06));
+  float k=0.08,h=clamp(0.5+0.5*(dShell-dS)/k,0.0,1.0);
+  float dB=mix(dShell,dS,h)-k*h*(1.0-h);
+  vec3 pf=p-vec3(0.0,-0.32,0.0);pf.x+=0.05*sin(uTime*9.0+pf.y*7.0);
+  float dF=(length(pf*vec3(1.0,0.62,1.0))-0.17-0.03*uBoost)*0.8;
+  if(dF<dB)return vec2(dF,2.0);
+  return vec2(dB,dS<dShell?1.0:0.0);
+}
+vec3 nrm(vec3 p){vec2 e=vec2(0.003,-0.003);return normalize(e.xyy*map(p+e.xyy).x+e.yyx*map(p+e.yyx).x+e.yxy*map(p+e.yxy).x+e.xxx*map(p+e.xxx).x);}
+float ao(vec3 p,vec3 n){float o=0.0,sc=1.0;for(int i=0;i<4;i++){float h=0.02+0.07*float(i);o+=(h-map(p+n*h).x)*sc;sc*=0.7;}return clamp(1.0-2.4*o,0.0,1.0);}
+void main(){
+  vec2 uv=(gl_FragCoord.xy/uRes)*2.0-1.0;uv.y-=0.01;
+  float flick=uGlow*(0.84+0.16*sin(uTime*11.0)*sin(uTime*5.3+1.7)+0.08*sin(uTime*27.0))+0.9*uBoost;
+  vec3 ro=vec3(0.0,0.35,4.2),rd=normalize(vec3(uv*0.34,-1.0));
+  mat2 ry=rot(uYaw),rx=rot(uPitch);
+  ro.xz=ry*ro.xz;rd.xz=ry*rd.xz;ro.yz=rx*ro.yz;rd.yz=rx*rd.yz;
+  vec3 lk=normalize(vec3(-0.55,0.75,0.6)),lr=normalize(vec3(0.9,0.15,-0.4));
+  lk.xz=ry*lk.xz;lk.yz=rx*lk.yz;lr.xz=ry*lr.xz;lr.yz=rx*lr.yz;
+  float b=dot(ro,rd),disc=b*b-(dot(ro,ro)-2.6);
+  bool hit=false;float mat=0.0,t=0.0;
+  if(disc>0.0){t=-b-sqrt(disc);for(int i=0;i<84;i++){vec2 r=map(ro+rd*t);if(r.x<0.0015){hit=true;mat=r.y;break;}t+=r.x*0.85;if(t>9.0)break;}}
+  float dmin=length(ro-rd*dot(ro,rd));
+  float halo=exp(-pow(dmin/1.05,2.0)*2.2)*uGlow;
+  if(!hit){gl_FragColor=vec4(vec3(1.0,0.42,0.05)*halo*0.42,halo*0.3);return;}
+  vec3 p=ro+rd*t,n=nrm(p),c;
+  float ndv=max(dot(n,-rd),0.0);
+  if(mat>1.5){
+    c=mix(vec3(1.0,0.32,0.02),vec3(1.0,0.93,0.55),pow(ndv,1.4))*(1.5*flick+0.3);
+  }else if(mat>0.5){
+    float dif=max(dot(n,lk),0.0);
+    c=vec3(0.30,0.21,0.07)*(0.18+0.9*dif)+vec3(1.0,0.12,0.18)*pow(1.0-ndv,3.0)*0.35;
+    c+=vec3(1.0,0.5,0.1)*0.12*flick;
+  }else if(length(vec3(p.x,p.y*1.22,p.z))<0.93){
+    vec3 fl=vec3(0.0,-0.32,0.0);float d2=dot(p-fl,p-fl);
+    c=vec3(1.0,0.46,0.07)*flick*(0.3+1.7/(1.0+2.6*d2));
+  }else{
+    float phi=atan(p.z,p.x),groove=pow(1.0-abs(sin(phi*5.0)),6.0);
+    vec3 base=uBase*(0.5+0.5*(1.0-groove));
+    base*=0.93+0.07*sin(phi*37.0+p.y*3.0);
+    base*=mix(0.7,1.0,smoothstep(-0.8,0.2,p.y));
+    float dif=max(dot(n,lk),0.0),a=ao(p,n);
+    c=base*(vec3(0.11,0.06,0.08)+vec3(1.0,0.95,0.92)*0.66*dif*a);
+    vec3 h=normalize(lk-rd);
+    c+=pow(max(dot(n,h),0.0),38.0)*0.32*a*vec3(1.0,0.9,0.82);
+    c+=vec3(1.0,0.1,0.16)*pow(1.0-ndv,3.0)*(0.25+0.7*max(dot(n,lr),0.0))*0.6;
+    float fd=face(p.xy);
+    c+=vec3(1.0,0.5,0.08)*exp(-max(fd,0.0)*9.0)*smoothstep(0.05,0.35,p.z)*0.95*flick;
+  }
+  gl_FragColor=vec4(pow(clamp(c,0.0,1.4),vec3(0.92)),1.0);
+}`;
+    const VERT = 'attribute vec2 aPos;void main(){gl_Position=vec4(aPos,0.0,1.0);}';
+    const PK_CFG = [
+      { size: 340, left: '0.4%', bottom: '-1.5vh', face: 0, base: [0.95, 0.36, 0.04], ph: 0 },
+      { size: 285, right: '0.6%', bottom: '-1.5vh', face: 1, base: [0.93, 0.3, 0.03], ph: 2 },
+      { size: 195, left: '25.5%', bottom: '-2.5vh', face: 2, base: [0.96, 0.42, 0.06], ph: 4 },
+      { size: 150, right: '27%', bottom: '-1.5vh', face: 0, base: [0.9, 0.33, 0.04], ph: 6 }
+    ];
+    const FALLBACK =
+      '<svg class="fb" viewBox="0 0 120 100"><ellipse cx="60" cy="58" rx="40" ry="36" fill="#e2610f"/><path d="M57 24c0-10 6-17 15-19l2 6c-6 1-8 6-8 13z" fill="#2c3a12"/><g fill="#ffd45a"><path d="M40 48l12 6-12 6z"/><path d="M80 48l-12 6 12 6z"/><path d="M38 72c8 12 36 12 44 0l-6-3-5 6-7-5-6 6-6-6-7 5z"/></g></svg>';
+    const pumpkins = [];
+    const sparks = [];
+    const sparkSprite = sprite('255,150,30', 64, 0.95);
+
+    const makePumpkin = (cfg) => {
+      const w = document.createElement('div');
+      w.className = 'pk';
+      w.style.cssText = `width:${cfg.size}px;height:${cfg.size}px;bottom:${cfg.bottom};${cfg.left ? 'left:' + cfg.left : 'right:' + cfg.right}`;
+      w.innerHTML = '<i class="pshadow"></i><i class="pglow"></i>';
+      const cv = document.createElement('canvas');
+      const k = Math.min(2, Math.max(1.5, window.devicePixelRatio || 1));
+      cv.width = cv.height = Math.round(cfg.size * k);
+      w.appendChild(cv);
+      document.body.appendChild(w);
+      const P = { w, cv, cfg, glow: 1, glowT: 1, boost: 0, yaw: 0, pitch: 0, cx: 0, cy: 0, gl: null };
+      const gl = cv.getContext('webgl', { alpha: true, premultipliedAlpha: true, antialias: false });
+      const fail = (m) => {
+        console.warn('pumpkin fallback:', m);
+        cv.style.display = 'none';
+        w.insertAdjacentHTML('beforeend', FALLBACK);
+      };
+      if (!gl) {
+        fail('no webgl');
+        return P;
+      }
+      const sh = (type, src) => {
+        const o = gl.createShader(type);
+        gl.shaderSource(o, src);
+        gl.compileShader(o);
+        if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(o);
+        return o;
+      };
+      try {
+        const pr = gl.createProgram();
+        gl.attachShader(pr, sh(gl.VERTEX_SHADER, VERT));
+        gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FRAG));
+        gl.linkProgram(pr);
+        if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) throw gl.getProgramInfoLog(pr);
+        gl.useProgram(pr);
+        const buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+        const loc = gl.getAttribLocation(pr, 'aPos');
+        gl.enableVertexAttribArray(loc);
+        gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+        P.u = {};
+        ['uRes', 'uTime', 'uYaw', 'uPitch', 'uBoost', 'uGlow', 'uFace', 'uBase'].forEach((n) => {
+          P.u[n] = gl.getUniformLocation(pr, n);
+        });
+        gl.viewport(0, 0, cv.width, cv.height);
+        gl.clearColor(0, 0, 0, 0);
+        P.gl = gl;
+      } catch (e) {
+        fail(e);
+        return P;
+      }
+      P.base = PUMPKIN_STYLE === 'blood' ? [0.78, 0.05, 0.09] : cfg.base;
+      cv.addEventListener('pointerenter', () => {
+        P.glowT = 1.35;
+      });
+      cv.addEventListener('pointerleave', () => {
+        P.glowT = 1;
+      });
+      cv.addEventListener('click', () => {
+        P.boost = 1.3;
+        w.classList.remove('laugh');
+        void w.offsetWidth;
+        w.classList.add('laugh');
+        tone(150, 0.55, 'sawtooth', 0.03, 0, 65);
+        tone(230, 0.35, 'square', 0.012, 0.07, 100);
+        const r = cv.getBoundingClientRect();
+        for (let i = 0; i < 46; i++) {
+          sparks.push({
+            x: r.left + r.width * 0.5 + rnd(-30, 30),
+            y: r.top + r.height * 0.5 + rnd(-30, 10),
+            vx: rnd(-190, 190),
+            vy: rnd(-340, -60),
+            life: 1,
+            s: rnd(5, 13)
+          });
+        }
+      });
+      return P;
+    };
+    PK_CFG.forEach((c) => pumpkins.push(makePumpkin(c)));
+
+    let pkFrame = 0;
+    const renderPumpkins = (t) => {
+      pkFrame++;
+      if (pkFrame % 2) return;
+      const tt = t * 0.001;
+      for (const P of pumpkins) {
+        if (!P.gl) continue;
+        if (pkFrame % 30 === 0 || !P.cx) {
+          const r = P.cv.getBoundingClientRect();
+          P.cx = r.left + r.width / 2;
+          P.cy = r.top + r.height * 0.6;
+        }
+        P.glow += (P.glowT - P.glow) * 0.12;
+        P.boost *= 0.93;
+        const yawT = Math.max(-0.6, Math.min(0.6, ((ptr.sx - P.cx) / window.innerWidth) * 2.2)) + Math.sin(tt * 0.6 + P.cfg.ph) * 0.1;
+        const pitT = Math.max(-0.25, Math.min(0.25, ((ptr.sy - P.cy) / window.innerHeight) * 0.5));
+        P.yaw += (yawT - P.yaw) * 0.08;
+        P.pitch += (pitT - P.pitch) * 0.08;
+        const g = P.gl;
+        const u = P.u;
+        g.clear(g.COLOR_BUFFER_BIT);
+        g.uniform2f(u.uRes, P.cv.width, P.cv.height);
+        g.uniform1f(u.uTime, tt + P.cfg.ph);
+        g.uniform1f(u.uYaw, P.yaw);
+        g.uniform1f(u.uPitch, P.pitch);
+        g.uniform1f(u.uBoost, P.boost);
+        g.uniform1f(u.uGlow, P.glow);
+        g.uniform1f(u.uFace, P.cfg.face);
+        g.uniform3f(u.uBase, P.base[0], P.base[1], P.base[2]);
+        g.drawArrays(g.TRIANGLES, 0, 3);
+      }
+    };
+
+    const drawSparks = (dt) => {
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const q = sparks[i];
+        q.vy += 520 * dt;
+        q.x += q.vx * dt;
+        q.y += q.vy * dt;
+        q.life -= dt * 1.1;
+        if (q.life <= 0) {
+          sparks.splice(i, 1);
+          continue;
+        }
+        fx.globalAlpha = Math.min(1, q.life * 1.4);
+        fx.drawImage(sparkSprite, q.x - q.s, q.y - q.s, q.s * 2, q.s * 2);
+      }
+      fx.globalAlpha = 1;
+    };
+
     // Animation Loop
     let last = performance.now();
     const frame = (t) => {
@@ -643,6 +881,8 @@ export default function LandingPage() {
       par.forEach(([e, k]) => {
         if (e) e.style.transform = `translate3d(${(ptr.snx * k).toFixed(2)}px,${(ptr.sny * k * 0.6).toFixed(2)}px,0)`;
       });
+
+      renderPumpkins(t);
 
       // Background
       bx.clearRect(0, 0, VW, VH);
@@ -722,6 +962,7 @@ export default function LandingPage() {
       }
       fx.globalCompositeOperation = 'source-over';
       fx.globalAlpha = 1;
+      drawSparks(dt);
 
       for (const b of bats) {
         b.x += b.vx * dt;
@@ -744,6 +985,14 @@ export default function LandingPage() {
 
     return () => {
       if (animId) cancelAnimationFrame(animId);
+      // Browsers cap live WebGL contexts, so release each pumpkin's context when this effect re-runs
+      for (const P of pumpkins) {
+        if (P.gl) {
+          const lose = P.gl.getExtension('WEBGL_lose_context');
+          if (lose) lose.loseContext();
+        }
+        P.w.remove();
+      }
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('click', onWindowClick);
       window.removeEventListener('resize', fit);
