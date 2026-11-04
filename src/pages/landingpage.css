@@ -834,10 +834,10 @@ canvas {
   --logo-4: #c8101e;
   --logo-5: #0a0a0a;
   --tag-color: #ffffff;
-  --panel-a: 14, 14, 14;
-  --panel-b: 0, 0, 0;
-  --card-a: 255, 255, 255;
-  --card-b: 244, 244, 244;
+  --panel-a: 84, 16, 10;
+  --panel-b: 46, 8, 6;
+  --card-a: 34, 12, 20;
+  --card-b: 20, 6, 14;
   --hill-far-a: #4a0610;
   --hill-far-b: #0d0405;
   --hill-near: #000000;
@@ -1186,3 +1186,28 @@ html { background: #000; }
 .mute .x { opacity: 0; }
 .mute[aria-pressed=false] .w { opacity: 0; }
 .mute[aria-pressed=false] .x { opacity: 1; }
+
+/* Unified luxury dark glass card overrides */
+.node, .node.inv {
+  background: linear-gradient(160deg, rgba(34, 12, 20, .88), rgba(20, 6, 14, .94)) !important;
+  border: 1px solid rgba(255, 214, 140, .35) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .65), 0 0 24px color-mix(in srgb, var(--c) 16%, transparent), inset 0 1px 0 rgba(255, 230, 160, .35) !important;
+}
+.node:hover, .node.inv:hover {
+  border-color: color-mix(in srgb, var(--c) 70%, rgba(255, 210, 130, .8)) !important;
+  box-shadow: 0 22px 50px rgba(0, 0, 0, .75), 0 0 40px color-mix(in srgb, var(--c) 35%, transparent), inset 0 1px 0 rgba(255, 240, 190, .6) !important;
+}
+.node .t, .node.inv .t, .t {
+  color: #fff6e8 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .8) !important;
+}
+.node .d, .node.inv .d, .d {
+  color: rgba(255, 230, 195, .8) !important;
+}
+.node .tag, .node.inv .tag {
+  display: none !important;
+}
+.ico {
+  background: radial-gradient(circle at 30% 25%, color-mix(in srgb, var(--c) 30%, transparent), rgba(20, 6, 12, 0.7)) !important;
+  border: 1px solid color-mix(in srgb, var(--c) 50%, rgba(255, 214, 140, 0.4)) !important;
+}
