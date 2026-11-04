@@ -3539,12 +3539,12 @@
         matrix: `<svg viewBox="0 0 24 24"><circle cx="12" cy="10.5" r="6.6"/><path d="M7 19.6h10M8.6 17.1l-1.3 2.5M15.4 17.1l1.3 2.5"/><path class="sp" d="M12 6.9l.95 2.3 2.35.95-2.35.95L12 13.4l-.95-2.3-2.35-.95 2.35-.95z"/></svg>`
       };
       const nodes = [
-        { id: 'crm', n: '1', x: 0, y: 0, c: '#ff8a3d', icon: 'diya', cls: 'diya', t: 'CRM', d: 'Prospects and pipeline', tag: '+18.4%' },
-        { id: 'clients', n: '2', x: 330, y: 175, c: '#ff6fa8', icon: 'lotus', cls: 'lotus', t: 'Client Module', d: 'Client accounts and contacts', tag: '99.98%', inv: true },
-        { id: 'alchemflow', n: '3', x: 662, y: 0, c: '#ffc94d', icon: 'mandala', cls: 'mandala', t: 'Alchemflow', d: 'Vendors and applicants', tag: 'Live Flow' },
-        { id: 'hrms', n: '4', x: 995, y: 175, c: '#ffb347', icon: 'lantern', cls: 'klantern', t: 'HRMS', d: 'People and HR ops', tag: 'Global', inv: true },
-        { id: 'financials', n: '5', x: 1325, y: 0, c: '#f0649b', icon: 'coin', cls: 'coin', t: 'Financials', d: 'Billing and books', tag: 'Realtime' },
-        { id: 'matrix', n: 'AI', x: 662, y: 350, c: '#a98bff', icon: 'matrix', cls: 'matrix', t: 'Matrix', d: 'Team insights', tag: 'Autonomous', ai: true }
+        { id: 'crm', n: '1', x: 0, y: 0, c: '#ff8a3d', icon: 'diya', cls: 'diya', t: 'CRM', d: 'Prospects and pipeline', tag: '+18.4%', href: 'https://q9lab.in/crm/login' },
+        { id: 'clients', n: '2', x: 330, y: 175, c: '#ff6fa8', icon: 'lotus', cls: 'lotus', t: 'Client Module', d: 'Client accounts and contacts', tag: '99.98%', inv: true, href: 'https://q9lab.in/cms' },
+        { id: 'alchemflow', n: '3', x: 662, y: 0, c: '#ffc94d', icon: 'mandala', cls: 'mandala', t: 'Alchemflow', d: 'Vendors and applicants', tag: 'Live Flow', href: 'http://q9lab.in/vms' },
+        { id: 'hrms', n: '4', x: 995, y: 175, c: '#ffb347', icon: 'lantern', cls: 'klantern', t: 'HRMS', d: 'People and HR ops', tag: 'Global', inv: true, href: 'https://q9lab.in/hrms/' },
+        { id: 'financials', n: '5', x: 1325, y: 0, c: '#f0649b', icon: 'coin', cls: 'coin', t: 'Financials', d: 'Billing and books', tag: 'Realtime', href: 'http://q9lab.in/vendormanagement/' },
+        { id: 'matrix', n: 'AI', x: 662, y: 350, c: '#a98bff', icon: 'matrix', cls: 'matrix', t: 'Matrix', d: 'Team insights', tag: 'Autonomous', ai: true, href: 'http://20.244.92.198/COSEC/Login/Login' }
       ];
       const W = 285, H = 98;
       const T = { ember: '255,176,40', wisps: ['255,176,60', '255,120,70', '255,205,110', '230,90,140'], wispN: 16, wispA: .5, stars: ['#e8590c', '#f59f00', '#d6336c'], bats: 7, emberN: 1, emberMul: .9 };
@@ -3572,7 +3572,7 @@
       const slots = nodes.map((o, i) => {
         const s = document.createElement('div'); s.className = 'slot';
         s.style.cssText = `left:${o.x}px;top:${o.y}px;--c:${o.c};--d:${(.75 + i * .14).toFixed(2)}s`;
-        s.innerHTML = `<a class="node${o.ai ? ' ai' : ''}${o.inv ? ' inv' : ''}" href="#${o.id}" aria-label="${o.t} — ${o.d}">
+        s.innerHTML = `<a class="node${o.ai ? ' ai' : ''}${o.inv ? ' inv' : ''}" href="${o.href || '#' + o.id}"${o.href ? ' target="_blank" rel="noopener noreferrer"' : ''} aria-label="${o.t} — ${o.d}">
     <span class="spot"></span><span class="scan"></span>${o.ai ? '<span class="aura"></span><span class="aura b"></span>' : ''}
     <span class="num${o.ai ? ' ai' : ''}">${o.n}</span>
     <span class="ico ${o.cls}">${ICONS[o.icon]}</span>
@@ -3588,7 +3588,8 @@
         });
         s.addEventListener('pointerleave', () => { node.style.transform = '' });
         node.addEventListener('click', e => {
-          e.preventDefault(); clickThud();
+          if (!o.href) e.preventDefault();
+          clickThud();
           const r = node.getBoundingClientRect(), k = r.width / W, rp = document.createElement('span');
           rp.className = 'ripple'; rp.style.left = ((e.clientX - r.left) / k) + 'px'; rp.style.top = ((e.clientY - r.top) / k) + 'px';
           node.querySelector('.scan').appendChild(rp); setTimeout(() => rp.remove(), 900);
