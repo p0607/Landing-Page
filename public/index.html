@@ -1146,6 +1146,57 @@
       opacity: 0
     }
 
+    .aurora {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 46vh;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0;
+      mix-blend-mode: screen;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(#000 0%, #000 42%, transparent 100%);
+      mask-image: linear-gradient(#000 0%, #000 42%, transparent 100%)
+    }
+
+    .aurora i {
+      position: absolute;
+      inset: -22% -14% 10%;
+      filter: blur(22px);
+      opacity: .95;
+      transform-origin: 50% 0;
+      animation: aurora-drift 18s ease-in-out infinite
+    }
+
+    .aurora i:nth-child(1) {
+      background: radial-gradient(ellipse 70% 58% at 28% 16%, rgba(70, 255, 180, .85), transparent 62%), radial-gradient(ellipse 48% 42% at 55% 4%, rgba(90, 210, 255, .65), transparent 60%)
+    }
+
+    .aurora i:nth-child(2) {
+      animation-duration: 24s;
+      animation-delay: -7s;
+      background: radial-gradient(ellipse 62% 52% at 72% 14%, rgba(196, 120, 255, .72), transparent 64%), radial-gradient(ellipse 44% 36% at 40% 0%, rgba(50, 255, 200, .55), transparent 58%)
+    }
+
+    .aurora i:nth-child(3) {
+      animation-duration: 16s;
+      animation-direction: reverse;
+      background: linear-gradient(108deg, transparent 16%, rgba(70, 255, 190, .45) 34%, rgba(100, 180, 255, .38) 50%, rgba(220, 130, 255, .4) 64%, transparent 82%)
+    }
+
+    @keyframes aurora-drift {
+      0%,
+      100% {
+        transform: translateX(-5%) skewX(-8deg) scaleY(1)
+      }
+
+      50% {
+        transform: translateX(6%) skewX(10deg) scaleY(1.14)
+      }
+    }
+
     #snowB {
       z-index: 2
     }
@@ -1315,7 +1366,7 @@
       font-weight: 500;
       letter-spacing: .5em;
       padding-left: .5em;
-      color: var(--ice);
+      color: #000;
       opacity: 0;
       transform: translateY(10px);
       transition: opacity 0.56s 0.04s, transform 0.56s 0.04s;
@@ -1613,6 +1664,8 @@
     body.rm .fogs,
     body.rm .sweep,
     body.rm .cold,
+    body.rm .aurora,
+    body.rm .aurora i,
     body.rm .logo .comet,
     body.rm .logo .pulses {
       animation: none !important
@@ -1738,6 +1791,10 @@
       color: #F5F9FF !important
     }
 
+    .air {
+      color: #000 !important
+    }
+
     a,
     a:hover,
     .node,
@@ -1753,6 +1810,7 @@
 
 <body>
   <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="fogs" aria-hidden="true"><i></i><i></i></div>
   <div class="cold" aria-hidden="true"></div>
   <canvas id="snowB" aria-hidden="true"></canvas>
@@ -2082,6 +2140,43 @@
       const LAMPS = []; for (let k = 0; k < P / 16; k++)LAMPS.push({ s: k * 16 + (k % 2 ? 8 : 0), sx: k % 2 ? 1 : -1, k });
       const SKY = []; { const r = rng(5); for (let i = 0; i < 60; i++)SKY.push({ x: r(), w: .012 + r() * .03, h: 20 + r() * 110, lit: r() }) }
       let lampScreen = [];
+      function drawAurora(c, t, vx, vy, I) {
+        const vis = sm(1.2, 6.2, t) * (.75 + .25 * I);
+        if (vis < .02) return;
+        c.save();
+        c.globalCompositeOperation = 'lighter';
+        const skyH = Math.max(90, vy);
+        const bloom = c.createRadialGradient(vx, skyH * .22, 0, vx, skyH * .28, VW * .55);
+        bloom.addColorStop(0, rgba([80, 255, 190], .28 * vis)); bloom.addColorStop(.45, rgba([90, 170, 255], .14 * vis)); bloom.addColorStop(1, rgba([180, 110, 255], 0));
+        c.fillStyle = bloom; c.fillRect(0, 0, VW, skyH);
+        const sheets = [
+          { col: [56, 255, 176], x: .22, rx: .48, ry: .46, a: .42, spd: .1, ph: 0 },
+          { col: [80, 200, 255], x: .5, rx: .42, ry: .38, a: .34, spd: .07, ph: 1.8 },
+          { col: [196, 118, 255], x: .76, rx: .4, ry: .36, a: .3, spd: .12, ph: 3.2 }
+        ];
+        sheets.forEach((b, i) => {
+          const cx = vx + (b.x - .5) * VW * 1.15 + Math.sin(RT * b.spd * 6 + b.ph) * VW * .06;
+          const cy = skyH * (.16 + .07 * Math.sin(RT * .08 + i));
+          const rx = b.rx * VW, ry = b.ry * skyH, a = b.a * vis;
+          const g = c.createRadialGradient(cx, cy, 0, cx, cy, rx);
+          g.addColorStop(0, rgba(b.col, a)); g.addColorStop(.48, rgba(b.col, a * .38)); g.addColorStop(1, rgba(b.col, 0));
+          c.fillStyle = g; c.beginPath(); c.ellipse(cx, cy, rx, ry, -.28 + .12 * Math.sin(RT * .05 + i), 0, 6.283); c.fill()
+        });
+        for (let k = 0; k < 5; k++) {
+          const x0 = VW * (-.12 + k * .22) + Math.sin(RT * .13 + k * 1.1) * 48;
+          c.beginPath(); c.moveTo(x0, 0);
+          for (let x = 0; x <= VW; x += 16) {
+            c.lineTo(x0 + x * .55, 8 + (.16 + .1 * (k % 3)) * skyH + Math.sin(x * .01 + RT * (.42 + k * .1) + k) * (34 + k * 8) + Math.sin(x * .022 + RT * .2) * 12)
+          }
+          c.lineTo(x0 + VW * .55, 0); c.closePath();
+          const col = [[48, 255, 170], [70, 210, 255], [186, 120, 255], [90, 255, 200], [120, 160, 255]][k];
+          const a = (.16 + (k % 3) * .04) * vis;
+          const g = c.createLinearGradient(0, 0, 0, skyH);
+          g.addColorStop(0, rgba(col, a * 1.35)); g.addColorStop(.5, rgba(col, a * .45)); g.addColorStop(1, rgba(col, 0));
+          c.fillStyle = g; c.fill()
+        }
+        c.restore()
+      }
       function drawCity() {
         const c = bx, t = T, I = sm(.3, 2.4, t);
         const swX = Math.sin(RT * .6) * 1.4, swY = Math.sin(RT * .8 + 1) * .9, vx = VPX + swX, vy = VPY + swY;
@@ -2090,6 +2185,7 @@
         // sky + city-glow haze
         let g = c.createLinearGradient(0, 0, 0, vy + 20); g.addColorStop(0, '#070B12'); g.addColorStop(.7, '#0C1624'); g.addColorStop(1, '#16283d'); c.fillStyle = g; c.fillRect(0, 0, VW, VH);
         g = c.createRadialGradient(vx, vy, 0, vx, vy, VW * .55); g.addColorStop(0, rgba(WARM, .2 * I)); g.addColorStop(1, rgba(WARM, 0)); c.fillStyle = g; c.fillRect(0, 0, VW, vy + 60);
+        drawAurora(c, t, vx, vy, I);
         // distant skyline
         const sc = VW / 1440;
         SKY.forEach(b => {
@@ -2289,6 +2385,7 @@
         cues();
         const spd = T < 9 ? 3.4 * sm(0, 3.2, T) : lerp(3.4, .32, sm(9, 15, T)); cam += (T >= DUR ? .3 : spd) * dt;
         bg.style.opacity = sm(0, 2.4, T).toFixed(3);
+        const au = document.querySelector('.aurora'); if (au) au.style.opacity = (sm(1.4, 6.4, T)).toFixed(3);
         document.documentElement.style.setProperty('--fog', (.12 + .36 * sm(1, 5, T)).toFixed(3));
         drawCity(); drawSnow(dt); drawFrost();
       }
